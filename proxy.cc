@@ -5,7 +5,7 @@
 #include <sys/socket.h> // socket(), setsockopt()
 #include <sys/types.h>
 #include <arpa/inet.h> // sockaddr_in, htons, inet_ntoa, ntohs
-
+#include <strings.h>
 
 using namespace std;
 
