@@ -1,4 +1,4 @@
-## g++ -g -Wall -pedantic -O0 -std=c++0x main.cc proxy.cc -o http-proxy
+## g++ -g -Wall -pedantic -O0 -std=c++0x -x cc main.cc proxy.cc -x c proxy_parse.c -o http-proxy
 
 CXX = g++
 CXXFLAGS = -g -Wall -pedantic -O0 -std=c++0x
