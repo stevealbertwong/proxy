@@ -2,6 +2,9 @@
 
 network programming:
 http://www.bogotobogo.com/cplusplus/sockets_server_client.php
+http://beej.us/guide/bgnet/html/multi/index.html
+https://github.com/angrave/SystemProgramming/wiki/Networking,-Part-2:-Using-getaddrinfo
+https://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/netdb.h/getaddrinfo
 
 style:
 https://google.github.io/styleguide/cppguide.html

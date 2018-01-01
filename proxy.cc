@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include <sys/socket.h> // socket(), setsockopt(), recv()
+#include <sys/socket.h> // socket(), setsockopt(), recv(), getaddrinfo
 #include <sys/types.h> // getaddrinfo
 #include <arpa/inet.h> // sockaddr_in, htons, inet_ntoa, ntohs
 #include <strings.h> // bzero (on linux), strlen, strcat, strcpy
@@ -25,11 +25,9 @@ void HTTPProxy::ProxyRequest(){
     socklen_t clientAddrSize = sizeof(clientAddr);
     // write incoming client's connection to sockaddr
     int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
-
-
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
-    unsigned short clientPort = ntohs(clientAddr.sin_port);
+    uint16_t clientPort = ntohs(clientAddr.sin_port);
     
     cout << "server got connection:" << clientIPAddress << clientPort << endl;
 
@@ -54,7 +52,7 @@ void HTTPProxy::ProxyRequest(){
     request_message[0] = '\0';
 	int total_received_bits = 0;
     
-    // copy client request from stream to buf
+    // receive n copy client request from stream to buf
     while (strstr(request_message, "\r\n\r\n") == NULL) {
         int byte_recvd = recv(client_fd, buf, MAX_BUFFER_SIZE, 0);
         total_received_bits += byte_recvd;
@@ -69,36 +67,66 @@ void HTTPProxy::ProxyRequest(){
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();
     ParsedRequest_parse(req, request_message, strlen(request_message));
-    char*  browser_req  = RequestToString(req);	
+    char* req_string = RequestToString(req);	
 
-    // create remote socket
-    int remote_socket = 
-
-
-
-
-
-
-
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // remote socket: connection to remote host e.g. google
+    int remote_socket = CreateRemoteSocket(req->host, req->port);
+    SendRequestRemote(req_string, remote_socket, total_received_bits);
+    ProxyBackClient(client_fd, remote_socket);
+    
+    ParsedRequest_destroy(req);		
+	close(client_fd);   
+	close(remote_socket);
 }
 
 /* private init methods */
+
+void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
+    int MAX_BUF_SIZE = 5000;
+	int buff_length;
+	char received_buf[MAX_BUF_SIZE];
+
+    // receive from remote's response, send back to client
+	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
+        int totalsent = 0;
+        int senteach;
+        while (totalsent < buff_length) {		
+            if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {
+                fprintf (stderr," Error in sending to server ! \n");
+                    exit (1);
+            }
+            totalsent += senteach;
+		memset(received_buf,0,sizeof(received_buf));	
+    	}      
+    }
+}
+
+void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int buff_length){
+	int totalsent = 0;
+	int senteach;
+	while (totalsent < buff_length) {
+		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
+			fprintf (stderr," Error in sending to server ! \n");
+				exit (1);
+		}
+		totalsent += senteach;
+	}	
+}
+
+int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
+    // given address and port, configure hints to get results about host name
+    struct addrinfo hints, *servinfo;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+    hints.ai_socktype = SOCK_STREAM;
+    getaddrinfo(remote_addr, port, &hints, &servinfo);
+
+    // once get hostname info, creates remote socket n make a connection on socket
+    int remote_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+    connect(remote_socket, servinfo->ai_addr, servinfo->ai_addrlen);
+    freeaddrinfo(servinfo);
+    return remote_socket;
+}
 
 void HTTPProxy::CreateServerSocket(int port){
 
@@ -125,26 +153,17 @@ void HTTPProxy::CreateServerSocket(int port){
 
 char* HTTPProxy::RequestToString(struct ParsedRequest *req)
 {
-
 	/* Set headers */
 	ParsedHeader_set(req, "Host", req -> host);
 	ParsedHeader_set(req, "Connection", "close");
-
 	int iHeadersLen = ParsedHeader_headersLen(req);
-
 	char *headersBuf;
-
 	headersBuf = (char*) malloc(iHeadersLen + 1);
 	ParsedRequest_unparse_headers(req, headersBuf, iHeadersLen);
 	headersBuf[iHeadersLen] = '\0';
-
-
 	int request_size = strlen(req->method) + strlen(req->path) + strlen(req->version) + iHeadersLen + 4;
-	
 	char *serverReq;
-
 	serverReq = (char *) malloc(request_size + 1);
-
 	serverReq[0] = '\0';
 	strcpy(serverReq, req->method);
 	strcat(serverReq, " ");
