@@ -32,6 +32,8 @@ void HTTPProxy::ProxyRequest(){
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
     cout << "server got connection from client:" << clientIPAddress << clientPort << endl;
 
+
+
     // forward client request to google
     int MAX_BUFFER_SIZE = 5000;
     char buf[MAX_BUFFER_SIZE];
@@ -51,6 +53,7 @@ void HTTPProxy::ProxyRequest(){
         strcat(request_message, buf);
     }
     cout << "request_message : " << request_message << endl;
+    
 
 
     struct ParsedRequest *req;    // contains parsed request
@@ -59,10 +62,12 @@ void HTTPProxy::ProxyRequest(){
     char* req_string = RequestToString(req);	
     cout << "req_string : " << req_string << endl;
 
+
+    cout << "client host n port: " << req->host << req->port << endl;
     // remote socket: connection to remote host e.g. google
     int remote_socket = CreateRemoteSocket(req->host, req->port);
     
-    cout << "SendRequestRemote" << endl;
+    cout << "SendRequestRemote: " << remote_socket << " total received bits" << total_received_bits << endl;
     SendRequestRemote(req_string, remote_socket, total_received_bits);
 
     cout << "ProxyBackClient" << endl;
@@ -105,11 +110,11 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
     cout << "SendRequestRemote : "<< totalsent << " , " << buff_length << endl;
 	while (totalsent < buff_length) {
         cout << "about to send to remote" << endl;
-		// if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
-        //     cout << "error sending ot remote" << endl;
-        // }
+		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
+            cout << "error sending ot remote" << endl;
+        }
         
-        senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
+        // senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
         cout << "sent to remote" << senteach <<  endl;
 		totalsent += senteach;
         cout << "total sent to remote: " << totalsent << endl;
@@ -122,11 +127,21 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
     hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(remote_addr, port, &hints, &servinfo);
+    
+    if (getaddrinfo(remote_addr, port, &hints, &servinfo) !=0){
+        cout << " Error in server address format ! \n" << endl;
+    }
 
     // once get hostname info, creates remote socket n make a connection on socket
-    int remote_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
-    connect(remote_socket, servinfo->ai_addr, servinfo->ai_addrlen);
+    int remote_socket;
+    if((remote_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol))<0) {
+        cout << " Error in creating socket to server ! \n" << endl;
+    }
+    
+    if(connect(remote_socket, servinfo->ai_addr, servinfo->ai_addrlen) <0){
+        cout << " Error in connecting to server ! \n" << endl;
+    }
+    
     freeaddrinfo(servinfo);
     return remote_socket;
 }
