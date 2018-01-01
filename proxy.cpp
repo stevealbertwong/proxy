@@ -98,7 +98,9 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
 }
 
 void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int buff_length){
-	int totalsent = 0;
+	string temp;
+	temp.append(req_string);
+    int totalsent = 0;
     int senteach;
     cout << "SendRequestRemote : "<< totalsent << " , " << buff_length << endl;
 	while (totalsent < buff_length) {
@@ -108,7 +110,7 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
         // }
         
         senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
-        cout << "sent to remote" << endl;
+        cout << "sent to remote" << senteach <<  endl;
 		totalsent += senteach;
         cout << "total sent to remote: " << totalsent << endl;
 	}	
