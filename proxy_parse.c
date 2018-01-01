@@ -63,13 +63,13 @@ int ParsedHeader_set(struct ParsedRequest *pr,
      // steven: segfault since strlen(null)
     //  char null[5];
     //  if(strcmp(value,null)!=0){
-     if(value){
+     if(value){       
         ph->value = (char *)malloc(strlen(value)+1);
         memcpy(ph->value, value, strlen(value));
         ph->value[strlen(value)] = '\0';  
+        ph->keylen = strlen(key)+1;
+        ph->valuelen = strlen(value)+1;
      }
-     ph->keylen = strlen(key)+1;
-     ph->valuelen = strlen(value)+1;
      return 0;
 }
 
