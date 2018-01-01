@@ -58,7 +58,11 @@ void HTTPProxy::ProxyRequest(){
 
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
-    ParsedRequest_parse(req, request_message, strlen(request_message));
+    
+    if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
+        cout << "request message format not supported yet" << endl;
+    }
+
     if (req->port == NULL) {
         req->port = (char *) "80";
     }		 
