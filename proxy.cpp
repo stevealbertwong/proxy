@@ -107,7 +107,7 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
         //     cout << "error sending ot remote" << endl;
         // }
         
-        senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) 
+        senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0));
         cout << "sent to remote" << endl;
 		totalsent += senteach;
         cout << "total sent to remote: " << totalsent << endl;
