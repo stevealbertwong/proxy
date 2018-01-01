@@ -64,6 +64,7 @@ void HTTPProxy::ProxyRequest(){
     
     cout << "SendRequestRemote" << endl;
     SendRequestRemote(req_string, remote_socket, total_received_bits);
+    
     cout << "ProxyBackClient" << endl;
     ProxyBackClient(client_fd, remote_socket);
     
