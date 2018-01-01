@@ -50,21 +50,21 @@ void HTTPProxy::ProxyRequest(){
         }
         strcat(request_message, buf);
     }
-    cout << "request_message" << request_message << endl;
+    cout << "request_message : " << request_message << endl;
 
 
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
     ParsedRequest_parse(req, request_message, strlen(request_message));
     char* req_string = RequestToString(req);	
-    cout << "req_string" << req_string << endl;
+    cout << "req_string : " << req_string << endl;
 
     // remote socket: connection to remote host e.g. google
     int remote_socket = CreateRemoteSocket(req->host, req->port);
     
     cout << "SendRequestRemote" << endl;
     SendRequestRemote(req_string, remote_socket, total_received_bits);
-    
+
     cout << "ProxyBackClient" << endl;
     ProxyBackClient(client_fd, remote_socket);
     
@@ -82,14 +82,16 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
 
     // receive from remote's response, send back to client
 	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
+        cout << "received from remote: "<< buff_length << endl;
         int totalsent = 0;
         int senteach;
         while (totalsent < buff_length) {		
-            if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {
+            if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {                
                 fprintf (stderr," Error in sending to server ! \n");
                     exit (1);
             }
             totalsent += senteach;
+            cout << "sending back to client" << totalsent << endl;
 		memset(received_buf,0,sizeof(received_buf));	
     	}      
     }
@@ -104,6 +106,7 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
 				exit (1);
 		}
 		totalsent += senteach;
+        cout << "total sent to remote: " << totalsent << endl;
 	}	
 }
 
