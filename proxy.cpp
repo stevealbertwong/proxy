@@ -61,7 +61,7 @@ void HTTPProxy::ProxyRequest(){
     
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
-        break;
+        return 0;
     }
 
     if (req->port == NULL) {
