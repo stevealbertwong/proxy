@@ -103,9 +103,12 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
     cout << "SendRequestRemote : "<< totalsent << " , " << buff_length << endl;
 	while (totalsent < buff_length) {
         cout << "about to send to remote" << endl;
-		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
-            cout << "error sending ot remote" << endl;
-		}
+		// if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
+        //     cout << "error sending ot remote" << endl;
+        // }
+        
+        senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) 
+        cout << "sent to remote" << endl;
 		totalsent += senteach;
         cout << "total sent to remote: " << totalsent << endl;
 	}	
