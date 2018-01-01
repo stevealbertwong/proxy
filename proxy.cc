@@ -1,11 +1,15 @@
 #include "proxy.h"
+#include "proxy_parse.h"
 
 #include <iostream>
 
-#include <sys/socket.h> // socket(), setsockopt()
-#include <sys/types.h>
+#include <sys/socket.h> // socket(), setsockopt(), recv()
+#include <sys/types.h> // getaddrinfo
 #include <arpa/inet.h> // sockaddr_in, htons, inet_ntoa, ntohs
-#include <strings.h>
+#include <strings.h> // bzero (on linux), strlen, strcat, strcpy
+#include <stdlib.h> //malloc
+
+#include <netdb.h> // getaddrinfo
 
 using namespace std;
 
@@ -14,14 +18,13 @@ HTTPProxy::HTTPProxy(int port){
 
 }
 
-
 /* public methods */
 
 void HTTPProxy::ProxyRequest(){
     struct sockaddr_in clientAddr;
     socklen_t clientAddrSize = sizeof(clientAddr);
     // write incoming client's connection to sockaddr
-    int connectionfd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
+    int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
 
 
     
@@ -42,9 +45,54 @@ void HTTPProxy::ProxyRequest(){
         "<html><p> Hello, world!</p><html />";
     
     // send back to client
-    // send(connectionfd, response, strlen(response), 0);
+    // send(client_fd, response, strlen(response), 0);
 
     // forward client request to google
+    int MAX_BUFFER_SIZE = 5000;
+    char buf[MAX_BUFFER_SIZE];
+    char *request_message = (char *) malloc(MAX_BUFFER_SIZE); 
+    request_message[0] = '\0';
+	int total_received_bits = 0;
+    
+    // copy client request from stream to buf
+    while (strstr(request_message, "\r\n\r\n") == NULL) {
+        int byte_recvd = recv(client_fd, buf, MAX_BUFFER_SIZE, 0);
+        total_received_bits += byte_recvd;
+        buf[byte_recvd] = '\0';
+	  	if (total_received_bits > MAX_BUFFER_SIZE) {
+			MAX_BUFFER_SIZE *= 2;
+			request_message = (char *) realloc(request_message, MAX_BUFFER_SIZE);
+        }
+        strcat(request_message, buf);
+    }
+
+    struct ParsedRequest *req;    // contains parsed request
+    req = ParsedRequest_create();
+    ParsedRequest_parse(req, request_message, strlen(request_message));
+    char*  browser_req  = RequestToString(req);	
+
+    // create remote socket
+    int remote_socket = 
+
+
+
+
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -72,7 +120,42 @@ void HTTPProxy::CreateServerSocket(int port){
     
     const size_t kMaxQueuedRequests = 128;
     listen(mSocketDescriptor, kMaxQueuedRequests);
-    cout << "listening on port: " << port << endl;
-    
+    cout << "listening on port: " << port << endl;    
+}
+
+char* HTTPProxy::RequestToString(struct ParsedRequest *req)
+{
+
+	/* Set headers */
+	ParsedHeader_set(req, "Host", req -> host);
+	ParsedHeader_set(req, "Connection", "close");
+
+	int iHeadersLen = ParsedHeader_headersLen(req);
+
+	char *headersBuf;
+
+	headersBuf = (char*) malloc(iHeadersLen + 1);
+	ParsedRequest_unparse_headers(req, headersBuf, iHeadersLen);
+	headersBuf[iHeadersLen] = '\0';
+
+
+	int request_size = strlen(req->method) + strlen(req->path) + strlen(req->version) + iHeadersLen + 4;
+	
+	char *serverReq;
+
+	serverReq = (char *) malloc(request_size + 1);
+
+	serverReq[0] = '\0';
+	strcpy(serverReq, req->method);
+	strcat(serverReq, " ");
+	strcat(serverReq, req->path);
+	strcat(serverReq, " ");
+	strcat(serverReq, req->version);
+	strcat(serverReq, "\r\n");
+	strcat(serverReq, headersBuf);
+
+	free(headersBuf);
+
+	return serverReq;
 
 }

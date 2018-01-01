@@ -9,6 +9,7 @@ class HTTPProxy {
     private:
         int mSocketDescriptor;
         void CreateServerSocket(int port);
+        char* RequestToString(struct ParsedRequest *req);
         
 };
 
