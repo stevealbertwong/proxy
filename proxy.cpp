@@ -33,20 +33,6 @@ void HTTPProxy::ProxyRequest(){
     
     cout << "server got connection:" << clientIPAddress << clientPort << endl;
 
-    // format response
-    const char response[] =
-
-        "HTTP/1.1 200 OK\r\n"
-        "Server: nginx/1.2.1\r\n"
-        "Content-Type: text/html\r\n"
-        "Content-Length: 13\r\n"
-        "Connection: keep-alive\r\n"
-        "\r\n"
-        "<html><p> Hello, world!</p><html />";
-    
-    // send back to client
-    // send(client_fd, response, strlen(response), 0);
-
     // forward client request to google
     int MAX_BUFFER_SIZE = 5000;
     char buf[MAX_BUFFER_SIZE];
