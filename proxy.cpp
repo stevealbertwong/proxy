@@ -8,6 +8,7 @@
 #include <arpa/inet.h> // sockaddr_in, htons, inet_ntoa, ntohs
 #include <strings.h> // bzero (on linux), strlen, strcat, strcpy
 #include <stdlib.h> //malloc
+#include <unistd.h> // close()
 
 #include <netdb.h> // getaddrinfo
 
