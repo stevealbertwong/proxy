@@ -59,6 +59,9 @@ void HTTPProxy::ProxyRequest(){
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
     ParsedRequest_parse(req, request_message, strlen(request_message));
+    if (req->port == NULL) {
+        req->port = (char *) "80";
+    }		 
     char* req_string = RequestToString(req);	
     cout << "req_string : " << req_string << endl;
 
