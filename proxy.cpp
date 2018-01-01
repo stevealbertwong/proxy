@@ -29,9 +29,8 @@ void HTTPProxy::ProxyRequest(){
     int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
-    uint16_t clientPort = ntohs(clientAddr.sin_port);
-    
-    cout << "server got connection:" << clientIPAddress << clientPort << endl;
+    uint16_t clientPort = ntohs(clientAddr.sin_port);    
+    cout << "server got connection from client:" << clientIPAddress << clientPort << endl;
 
     // forward client request to google
     int MAX_BUFFER_SIZE = 5000;
@@ -51,15 +50,21 @@ void HTTPProxy::ProxyRequest(){
         }
         strcat(request_message, buf);
     }
+    cout << "request_message" << request_message << endl;
+
 
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
     ParsedRequest_parse(req, request_message, strlen(request_message));
     char* req_string = RequestToString(req);	
+    cout << "req_string" << req_string << endl;
 
     // remote socket: connection to remote host e.g. google
     int remote_socket = CreateRemoteSocket(req->host, req->port);
+    
+    cout << "SendRequestRemote" << endl;
     SendRequestRemote(req_string, remote_socket, total_received_bits);
+    cout << "ProxyBackClient" << endl;
     ProxyBackClient(client_fd, remote_socket);
     
     ParsedRequest_destroy(req);		
