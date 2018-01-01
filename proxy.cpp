@@ -66,7 +66,7 @@ void HTTPProxy::ProxyRequest(){
     }
 
     struct ParsedRequest *req;    // contains parsed request
-    req = ParsedRequest_create();
+    req = ParsedRequest_create();    
     ParsedRequest_parse(req, request_message, strlen(request_message));
     char* req_string = RequestToString(req);	
 

@@ -1,6 +1,8 @@
 #ifndef _http_proxy_
 #define _http_proxy_
 
+#include "proxy_parse.h"
+
 class HTTPProxy {
     public:
         HTTPProxy(int port);
