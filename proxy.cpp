@@ -61,29 +61,29 @@ void HTTPProxy::ProxyRequest(){
     
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
-        return 0;
+        
+    } else {
+        if (req->port == NULL) {
+            req->port = (char *) "80";
+        }		 
+        char* req_string = RequestToString(req);	
+        cout << "req_string : " << req_string << endl;
+
+
+        cout << "client host n port: " << req->host << req->port << endl;
+        // remote socket: connection to remote host e.g. google
+        int remote_socket = CreateRemoteSocket(req->host, req->port);
+        
+        cout << "SendRequestRemote: " << remote_socket << " total received bits" << total_received_bits << endl;
+        SendRequestRemote(req_string, remote_socket, total_received_bits);
+
+        cout << "ProxyBackClient" << endl;
+        ProxyBackClient(client_fd, remote_socket);
+        
+        ParsedRequest_destroy(req);		
+        close(client_fd);   
+        close(remote_socket);
     }
-
-    if (req->port == NULL) {
-        req->port = (char *) "80";
-    }		 
-    char* req_string = RequestToString(req);	
-    cout << "req_string : " << req_string << endl;
-
-
-    cout << "client host n port: " << req->host << req->port << endl;
-    // remote socket: connection to remote host e.g. google
-    int remote_socket = CreateRemoteSocket(req->host, req->port);
-    
-    cout << "SendRequestRemote: " << remote_socket << " total received bits" << total_received_bits << endl;
-    SendRequestRemote(req_string, remote_socket, total_received_bits);
-
-    cout << "ProxyBackClient" << endl;
-    ProxyBackClient(client_fd, remote_socket);
-    
-    ParsedRequest_destroy(req);		
-	close(client_fd);   
-	close(remote_socket);
 }
 
 /* private init methods */
