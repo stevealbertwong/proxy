@@ -11,7 +11,9 @@ https://google.github.io/styleguide/cppguide.html
 https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html
 */
 #include <iostream>
+#include <bits/stdc++.h>
 #include "proxy.h"
+#include "proxy_parse.h"
 
 using namespace std;
 
