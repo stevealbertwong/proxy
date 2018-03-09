@@ -24,22 +24,23 @@ https://support.zendesk.com/hc/en-us/articles/203691016-Formatting-text-with-Mar
 using namespace std;
 
 int main(int argc, char *argv[]){
-    // parse argv
+    struct sockaddr_in clientAddr;
+    socklen_t clientAddrSize = sizeof(clientAddr);
 
     HTTPProxy httpproxy(3500);
     
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){
         cout << "proxy request" << endl;
-        int clientfd = httpproxy.WaitToAccept();
+        int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
         int pid = fork();
         
         if(pid == 0){
-            httpproxy.ProxyRequest(clientfd);
-            close(clientfd);
+            httpproxy.ProxyRequest(client_fd);
+            close(client_fd);
             _exit(0);
         }else{
-            close(clientfd);
+            close(client_fd);
         }
         
     }

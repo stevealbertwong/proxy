@@ -5,8 +5,7 @@
 
 class HTTPProxy {
     public:
-        HTTPProxy(int port);
-        int WaitToAccept();
+        HTTPProxy(int port);        
         void ProxyRequest(int client_fd);
 
     private:

@@ -21,13 +21,6 @@ HTTPProxy::HTTPProxy(int port){
 
 /* public methods */
 
-int HTTPProxy::WaitToAccept(){
-    struct sockaddr_in clientAddr;
-    socklen_t clientAddrSize = sizeof(clientAddr);
-    // store incoming client's connection to sockaddr
-    int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
-    return client_fd;
-}
 
 void HTTPProxy::ProxyRequest(int client_fd){
     // struct sockaddr_in clientAddr;
