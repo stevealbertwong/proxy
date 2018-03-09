@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     struct sockaddr_in clientAddr;
     socklen_t clientAddrSize = sizeof(clientAddr);
 
-    HTTPProxy httpproxy(3500);
+    HTTPProxy httpproxy(3500, mSocketDescriptor);
     
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){

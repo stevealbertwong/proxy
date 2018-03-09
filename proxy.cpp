@@ -15,8 +15,8 @@
 
 using namespace std;
 
-HTTPProxy::HTTPProxy(int port){
-    CreateServerSocket(port);
+HTTPProxy::HTTPProxy(int port, int mSocketDescriptor){
+    CreateServerSocket(port, mSocketDescriptor);
 }
 
 /* public methods */
