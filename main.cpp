@@ -17,6 +17,7 @@ https://support.zendesk.com/hc/en-us/articles/203691016-Formatting-text-with-Mar
 #include <iostream>
 // https://stackoverflow.com/questions/25311011/how-does-include-bits-stdc-h-work-in-c
 #include <bits/stdc++.h> // includes every standard library and stl include file, unnecesserary stuff and increases compilation time
+#include <unistd.h> // fork(), close()
 #include "proxy.h"
 #include "proxy_parse.h"
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]){
         int pid = fork();
         
         if(pid == 0){
-            httpproxy.ProxyRequest();
+            httpproxy.ProxyRequest(clientfd);
             close(clientfd);
             _exit(0);
         }else{
