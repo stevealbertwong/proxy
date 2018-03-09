@@ -19,6 +19,7 @@ https://support.zendesk.com/hc/en-us/articles/203691016-Formatting-text-with-Mar
 #include <bits/stdc++.h> // includes every standard library and stl include file, unnecesserary stuff and increases compilation time
 #include <unistd.h> // fork(), close()
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include "proxy.h"
 #include "proxy_parse.h"
 

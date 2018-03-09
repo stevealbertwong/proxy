@@ -1,6 +1,7 @@
 #ifndef _http_proxy_
 #define _http_proxy_
 
+#include <sys/socket.h>
 #include "proxy_parse.h"
 
 class HTTPProxy {
