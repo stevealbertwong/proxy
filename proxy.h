@@ -6,7 +6,8 @@
 class HTTPProxy {
     public:
         HTTPProxy(int port);
-        void ProxyRequest();
+        int WaitToAccept();
+        void ProxyRequest(int client_fd);
 
     private:
         int mSocketDescriptor;
@@ -14,8 +15,7 @@ class HTTPProxy {
         void SendRequestRemote(const char *req_string, int remote_socket, int buff_length);
         int CreateRemoteSocket(char* remote_addr, char* port);
         void CreateServerSocket(int port);
-        char* RequestToString(struct ParsedRequest *req);
-        
+        char* RequestToString(struct ParsedRequest *req);        
 };
 
 #endif

@@ -17,16 +17,23 @@ using namespace std;
 
 HTTPProxy::HTTPProxy(int port){
     CreateServerSocket(port);
-
 }
 
 /* public methods */
 
-void HTTPProxy::ProxyRequest(){
+int HTTPProxy::WaitToAccept(){
     struct sockaddr_in clientAddr;
     socklen_t clientAddrSize = sizeof(clientAddr);
-    // write incoming client's connection to sockaddr
+    // store incoming client's connection to sockaddr
     int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
+    return client_fd;
+}
+
+void HTTPProxy::ProxyRequest(){
+    // struct sockaddr_in clientAddr;
+    // socklen_t clientAddrSize = sizeof(clientAddr);
+    // // store incoming client's connection to sockaddr
+    // int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
@@ -41,11 +48,12 @@ void HTTPProxy::ProxyRequest(){
     request_message[0] = '\0';
 	int total_received_bits = 0;
     
-    // receive n copy client request from stream to buf
+    // receive n copy client request from stream to request_message using buf and realloc
+    // strstr: substring match, null: no match, loop thru until \r\n\r\n
     while (strstr(request_message, "\r\n\r\n") == NULL) {
         int byte_recvd = recv(client_fd, buf, MAX_BUFFER_SIZE, 0);
         total_received_bits += byte_recvd;
-        buf[byte_recvd] = '\0';
+        buf[byte_recvd] = '\0'; // null-terminated
 	  	if (total_received_bits > MAX_BUFFER_SIZE) {
 			MAX_BUFFER_SIZE *= 2;
 			request_message = (char *) realloc(request_message, MAX_BUFFER_SIZE);
@@ -55,7 +63,8 @@ void HTTPProxy::ProxyRequest(){
     cout << "request_message : " << request_message << endl;
     
 
-
+    // HTTP Request Parsing Library parsing request
+    // Proxy request to google then back to client
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
     
@@ -153,6 +162,7 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
     freeaddrinfo(servinfo);
     return remote_socket;
 }
+
 
 void HTTPProxy::CreateServerSocket(int port){
 
