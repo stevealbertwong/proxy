@@ -157,7 +157,7 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
 }
 
 
-void HTTPProxy::CreateServerSocket(int port){
+void HTTPProxy::CreateServerSocket(int port, int mSocketDescriptor){
 
     mSocketDescriptor = socket(AF_INET, SOCK_STREAM, 0);
     
