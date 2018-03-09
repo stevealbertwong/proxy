@@ -22,7 +22,7 @@ HTTPProxy::HTTPProxy(int port){
 /* public methods */
 
 
-void HTTPProxy::ProxyRequest(int client_fd){
+void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr){
     // struct sockaddr_in clientAddr;
     // socklen_t clientAddrSize = sizeof(clientAddr);
     // // store incoming client's connection to sockaddr
