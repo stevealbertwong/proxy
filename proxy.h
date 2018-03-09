@@ -7,7 +7,7 @@
 class HTTPProxy {
     public:
         HTTPProxy(int port);        
-        void ProxyRequest(int client_fd, struct sockaddr_in clientAddr);
+        void ProxyRequest(int client_fd, struct sockaddr_in clientAddr, int mSocketDescriptor);
         
 
     private:

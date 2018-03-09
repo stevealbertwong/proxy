@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
         int pid = fork();
         
         if(pid == 0){
-            httpproxy.ProxyRequest(client_fd, clientAddr);
+            httpproxy.ProxyRequest(client_fd, clientAddr, mSocketDescriptor);
             close(client_fd);
             _exit(0);
         }else{
