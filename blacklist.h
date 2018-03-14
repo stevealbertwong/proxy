@@ -4,11 +4,12 @@
 #include <vector>
 #include <string>
 #include <regex>
+using namespace std;
 
 class HTTPBlacklist {
     public:
-        HTTPBlacklist(const char* file_name);
-        bool is_blacklisted(const char* website);
+        HTTPBlacklist(const string& file_name);
+        bool is_blacklisted(const string& website);
     private:
         std::vector<std::regex> blacklist_websites;
                 

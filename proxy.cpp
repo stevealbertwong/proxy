@@ -19,8 +19,7 @@ using namespace std;
 
 HTTPProxy::HTTPProxy(int port){
     CreateProxySocket(port);
-    blacklist("blocked-domains.txt");
-
+    
 }
 
 /* public methods */
@@ -71,8 +70,8 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     }
     cout << "request_message : " << request_message << endl;
 
-    
-    if(is_blacklisted(request_message)){
+    blacklist("blocked-domains.txt");
+    if(blacklist.is_blacklisted(request_message)){
         cout << "blacklisted server: " << request_message << endl;
         exit(0);
     }

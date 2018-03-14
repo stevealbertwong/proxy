@@ -12,7 +12,7 @@ using namespace std;
 1. when init(), read blacklist-websites.txt into std::vector<std::regex> blacklist_websites
 2. public method to check std::vector<std::regex> blacklist_websites
 */
-HTTPBlacklist::HTTPBlacklist(const char* file_name){
+HTTPBlacklist::HTTPBlacklist(const string& file_name){
     ifstream infile(file_name);
 
     while(true){
@@ -23,7 +23,7 @@ HTTPBlacklist::HTTPBlacklist(const char* file_name){
     }    
 }
 
-bool HTTPBlacklist::is_blacklisted(const char* website){
+bool HTTPBlacklist::is_blacklisted(const string& website){
     for (const regex& re: blacklist_websites){
         // regex_match only returns true match entire input sequence 
         // while regex_search will succeed even if only a sub-sequence matches the regex
