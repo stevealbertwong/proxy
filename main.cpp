@@ -20,10 +20,11 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     
-    clientAddrSize = sizeof(clientAddr);
+    struct sockaddr_in clientAddr;
+    socklen_t clientAddrSize = sizeof(clientAddr);
+    HTTPProxy httpproxy(3500);
+    int proxy_fd = getProxyfd();
 
-    HTTPProxy httpproxy(3500);        
-    
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){
 
