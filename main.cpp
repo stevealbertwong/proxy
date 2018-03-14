@@ -22,8 +22,7 @@ int main(int argc, char *argv[]){
     
     clientAddrSize = sizeof(clientAddr);
 
-    HTTPProxy httpproxy(3500);
-    
+    HTTPProxy httpproxy(3500);        
     
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){

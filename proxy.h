@@ -10,9 +10,9 @@ class HTTPProxy {
     public:
         HTTPProxy(int port);
         void ProxyRequest(int client_fd);
-        extern int proxy_fd;
-        struct sockaddr_in clientAddr;
-        socklen_t clientAddrSize;
+        static int proxy_fd;
+        static struct sockaddr_in clientAddr;
+        static socklen_t clientAddrSize;
 
 
     private:        
