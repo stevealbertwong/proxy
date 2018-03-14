@@ -1,4 +1,5 @@
 ## g++ -g -Wall -pedantic -O0 -std=c++0x -x cc main.cc proxy.cc -x c proxy_parse.c -o http-proxy
+## g++ -g -Wall main.cpp proxy.cpp proxy_parse.c blacklist.cpp -o http-proxy
 
 # compiler + assembler + linker
 CXX = g++
@@ -7,6 +8,7 @@ CXXFLAGS = -g -Wall
 SOURCES = \
 	main.cpp \
 	proxy.cpp \
+	blacklist.cpp \
 	proxy_parse.c 
 HEADERS = $(SOURCES:.cpp=.h)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -22,7 +24,8 @@ http-proxy: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o proxy_parse.o -c proxy_parse.c 
 	$(CXX) $(CXXFLAGS) -o proxy.o -c proxy.cpp
 	$(CXX) $(CXXFLAGS) -o main.o -c main.cpp
-	$(CXX) $(CXXFLAGS) -o http-proxy proxy_parse.o proxy.o main.o
+	$(CXX) $(CXXFLAGS) -o blacklist.o -c blacklist.cpp
+	$(CXX) $(CXXFLAGS) -o http-proxy proxy_parse.o proxy.o main.o blacklist.o
 
 clean:
 	rm -f http-proxy *.o
