@@ -31,11 +31,18 @@ port forwarding if set up your own computer as web server at home. check inet ad
 
 google external ip to check your own home server's external ip address when setting up port forwarding
 
+![alt text](https://raw.githubusercontent.com/stevealbertwong/stevealbertwong.github.io/master/assets/miscellaneous/router_port_forwarding.png)
+
 2. firefox proxy setting
 
 download Firefox on client for any os(http://www.mozilla.org/en-US/firefox/new/)
  
  Once you download and launch Firefox, you can configure it (on Macs) to connect to the Internet through *proxy* by launching *Preferences* from the Apple menu, selecting *Advanced*, selecting *Network* within *A**dvanced*, selecting *Connection* within *Network*, and then activating a manual proxy (On Windows, proxy settings can be configured by selecting *Tools → **Options*).
 
+![alt text](https://raw.githubusercontent.com/stevealbertwong/stevealbertwong.github.io/master/assets/miscellaneous/configure_firefox_proxy.png)
+
 www.stanford.edu/about/
-(websites like google did not work cause request parsing library failed)
+
+(some websites like google did not work at the moment cause request parsing library failed. I am working on this, pull request welcome!)
+
+
