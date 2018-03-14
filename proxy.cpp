@@ -38,18 +38,38 @@ void HTTPProxy::ProxyRequest(){
     int MAX_BUFFER_SIZE = 5000;
     char buf[MAX_BUFFER_SIZE];
     char *request_message = (char *) malloc(MAX_BUFFER_SIZE); 
+    
+    // error checking
+    if (request_message == NULL) {
+		fprintf (stderr," Error in memory allocation ! \n");
+		exit (1);
+	}
+    cout << "passed error checking requst msg not null " << endl;
+
     request_message[0] = '\0';
 	int total_received_bits = 0;
     
     // receive n copy client request from stream to buf
     while (strstr(request_message, "\r\n\r\n") == NULL) {
         int byte_recvd = recv(client_fd, buf, MAX_BUFFER_SIZE, 0);
-        total_received_bits += byte_recvd;
-        buf[byte_recvd] = '\0';
-	  	if (total_received_bits > MAX_BUFFER_SIZE) {
-			MAX_BUFFER_SIZE *= 2;
-			request_message = (char *) realloc(request_message, MAX_BUFFER_SIZE);
+        
+        // error checking
+        if (byte_recvd<0){
+            fprintf(stderr,"error in reciving from client's request");
+            exit(1);
+        } else if(byte_recvd ==0){
+            fprintf(stderr,"zero byte received");
+            break;
+        }else{
+            total_received_bits += byte_recvd;
+            buf[byte_recvd] = '\0';
+            if (total_received_bits > MAX_BUFFER_SIZE) {
+                MAX_BUFFER_SIZE *= 2;
+                request_message = (char *) realloc(request_message, MAX_BUFFER_SIZE);
+            }
+
         }
+        
         strcat(request_message, buf);
     }
     cout << "request_message : " << request_message << endl;
@@ -59,14 +79,15 @@ void HTTPProxy::ProxyRequest(){
     
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
+        exit(0);
         
     } else {
+        // default port set to 80
         if (req->port == NULL) {
             req->port = (char *) "80";
         }		 
         char* req_string = RequestToString(req);	
-        cout << "req_string : " << req_string << endl;
-
+        cout << "client req_string to be sent to google : " << req_string << endl;
 
         cout << "client host n port: " << req->host << req->port << endl;
         // remote socket: connection to remote host e.g. google
@@ -94,7 +115,7 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
     // receive from remote's response, send back to client
 	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
         
-        cout << "received from remote: "<< received_buf << endl;
+        cout << "received from remote: "<< buff_length << endl;
         string temp;
 	    temp.append(received_buf);
         int totalsent = 0;
