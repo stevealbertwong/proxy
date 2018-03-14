@@ -3,7 +3,7 @@
 
 # compiler + assembler + linker
 CXX = g++
-CXXFLAGS = -g -Wall 
+CXXFLAGS = -g -Wall -std=c++0x
 
 SOURCES = \
 	main.cpp \
