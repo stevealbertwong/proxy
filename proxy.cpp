@@ -26,7 +26,7 @@ void HTTPProxy::ProxyRequest(){
     struct sockaddr_in clientAddr;
     socklen_t clientAddrSize = sizeof(clientAddr);
     // write incoming client's connection to sockaddr
-    int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
+    int client_fd = accept(proxy_fd, (struct sockaddr *) &clientAddr, &clientAddrSize);
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
@@ -179,11 +179,11 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
 
 void HTTPProxy::CreateServerSocket(int port){
 
-    mSocketDescriptor = socket(AF_INET, SOCK_STREAM, 0);
+    proxy_fd = socket(AF_INET, SOCK_STREAM, 0);
     
     const int optval = 1;
     // allow other sockets to bind to this port, "Address already in use" error 
-    setsockopt(mSocketDescriptor, SOL_SOCKET, SO_REUSEADDR, &optval , sizeof(int)); 
+    setsockopt(proxy_fd, SOL_SOCKET, SO_REUSEADDR, &optval , sizeof(int)); 
     
     struct sockaddr_in serverAddr;
     bzero(&serverAddr, sizeof(serverAddr)); // memset
@@ -193,10 +193,10 @@ void HTTPProxy::CreateServerSocket(int port){
     serverAddr.sin_port = htons(port);
     struct sockaddr *sa = (struct sockaddr *) &serverAddr;
     
-    ::bind(mSocketDescriptor, sa, sizeof(serverAddr)); // c libs instead of std::bind
+    ::bind(proxy_fd, sa, sizeof(serverAddr)); // c libs instead of std::bind
     
     const size_t kMaxQueuedRequests = 128;
-    listen(mSocketDescriptor, kMaxQueuedRequests);
+    listen(proxy_fd, kMaxQueuedRequests);
     cout << "listening on port: " << port << endl;    
 }
 
