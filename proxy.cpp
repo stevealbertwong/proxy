@@ -190,7 +190,7 @@ char* HTTPProxy::RequestToString(struct ParsedRequest *req)
 	int request_size = strlen(req->method) + strlen(req->path) + strlen(req->version) + iHeadersLen + 4;
 	char *serverReq;
 	serverReq = (char *) malloc(request_size + 1);
-	serverReq[0] = '\0';
+	serverReq[0] = '\0'; // initialization of char string
 	strcpy(serverReq, req->method);
 	strcat(serverReq, " ");
 	strcat(serverReq, req->path);
