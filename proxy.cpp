@@ -75,8 +75,8 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     // cCurrentPath[sizeof(cCurrentPath) - 1] = '\0';
     // string blacklistFile = cCurrentPath + "/blocked-domains.txt"
     
-    HTTPBlacklist blacklist("/home/steve/Desktop/proxy/blocked-domains.txt");
-    cout << "blacklist initialized" << request_message << endl;
+    // HTTPBlacklist blacklist("/home/steve/Desktop/proxy/blocked-domains.txt");
+    // cout << "blacklist initialized" << request_message << endl;
     
     // if(blacklist.is_blacklisted(request_message)){
     //     cout << "blacklisted server: " << request_message << endl;
