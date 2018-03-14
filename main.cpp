@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
         if(pid==0){
             // should i instead reference it so multiprocess share same global variable
             cout << "mp with a common client_fd" << endl;
-            httpproxy.ProxyRequest(client_fd);
+            httpproxy.ProxyRequest(client_fd, clientAddr, clientAddrSize);
         }else{
             close(client_fd);
         }

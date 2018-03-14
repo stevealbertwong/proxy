@@ -9,10 +9,10 @@
 class HTTPProxy {
     public:
         HTTPProxy(int port);
-        void ProxyRequest(int client_fd);
-        // http://www.cplusplus.com/forum/beginner/6713/
+        void ProxyRequest(int client_fd, struct sockaddr_in clientAddr, socklen_t clientAddrSize);
+        // http://www.cplusplus.com/forum/beginner/6713/        
+        int proxy_fd;        
         int getProxyfd(){return this->proxy_fd;}
-        int proxy_fd;
 
     private:        
         void ProxyBackClient(int client_fd, int remote_socket);

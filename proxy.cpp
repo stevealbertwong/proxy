@@ -21,7 +21,7 @@ HTTPProxy::HTTPProxy(int port){
 }
 
 /* public methods */
-void HTTPProxy::ProxyRequest(int client_fd){                
+void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, socklen_t clientAddrSize){                
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
