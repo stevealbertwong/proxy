@@ -1,15 +1,21 @@
 #ifndef _http_proxy_
 #define _http_proxy_
 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
 #include "proxy_parse.h"
 
 class HTTPProxy {
     public:
         HTTPProxy(int port);
-        void ProxyRequest();
+        void ProxyRequest(int client_fd);
+        extern int proxy_fd;
+        struct sockaddr_in clientAddr;
+        socklen_t clientAddrSize;
 
-    private:
-        int proxy_fd;
+
+    private:        
         void ProxyBackClient(int client_fd, int remote_socket);
         void SendRequestRemote(const char *req_string, int remote_socket, int buff_length);
         int CreateRemoteSocket(char* remote_addr, char* port);

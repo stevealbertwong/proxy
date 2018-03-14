@@ -11,6 +11,7 @@ https://google.github.io/styleguide/cppguide.html
 https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html
 */
 #include <iostream>
+#include <unistd.h>
 #include <bits/stdc++.h>
 #include "proxy.h"
 #include "proxy_parse.h"
@@ -18,14 +19,25 @@ https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html
 using namespace std;
 
 int main(int argc, char *argv[]){
-    // parse argv
+    
+    clientAddrSize = sizeof(clientAddr);
 
     HTTPProxy httpproxy(3500);
     
+    
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){
-        cout << "proxy request looping" << endl;
-        httpproxy.ProxyRequest();
+
+        int client_fd = accept(proxy_fd, (struct sockaddr *) &clientAddr, &clientAddrSize);
+        
+        int pid = fork();
+        if(pid==0){
+            // should i instead reference it so multiprocess share same global variable
+            cout << "mp with a common client_fd" << endl;
+            httpproxy.ProxyRequest(client_fd);
+        }else{
+            close(client_fd);
+        }
     }
 
     return 0;
