@@ -1,5 +1,3 @@
-#include "proxy.h"
-#include "proxy_parse.h"
 #include <bits/stdc++.h>
 
 #include <iostream>
@@ -13,10 +11,15 @@
 
 #include <netdb.h> // getaddrinfo
 
+#include "proxy.h"
+#include "proxy_parse.h"
+#include "blacklist.h"
+
 using namespace std;
 
 HTTPProxy::HTTPProxy(int port){
     CreateProxySocket(port);
+    blacklist("blocked-domains.txt");
 
 }
 
@@ -67,6 +70,12 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
         strcat(request_message, buf);
     }
     cout << "request_message : " << request_message << endl;
+
+    
+    if(is_blacklisted(request_message)){
+        cout << "blacklisted server: " << request_message << endl;
+        exit(0);
+    }
     
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
