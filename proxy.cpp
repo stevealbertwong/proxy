@@ -76,10 +76,12 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     // string blacklistFile = cCurrentPath + "/blocked-domains.txt"
     
     HTTPBlacklist blacklist("/home/steve/Desktop/proxy/blocked-domains.txt");
-    if(blacklist.is_blacklisted(request_message)){
-        cout << "blacklisted server: " << request_message << endl;
-        exit(0);
-    }
+    cout << "blacklist initialized" << request_message << endl;
+    
+    // if(blacklist.is_blacklisted(request_message)){
+    //     cout << "blacklisted server: " << request_message << endl;
+    //     exit(0);
+    // }
     
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
@@ -150,8 +152,7 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
         cout << "about to send to remote" << endl;
 		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
             cout << "error sending ot remote" << endl;
-        }
-        
+        }        
         // senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
         cout << "sent to remote" << senteach <<  endl;
 		totalsent += senteach;
