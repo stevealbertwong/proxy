@@ -7,7 +7,7 @@
 #include <arpa/inet.h> // sockaddr_in, htons, inet_ntoa, ntohs
 #include <strings.h> // bzero (on linux), strlen, strcat, strcpy
 #include <stdlib.h> //malloc
-#include <unistd.h> // close()
+#include <unistd.h> // close(), getcwd()
 
 #include <netdb.h> // getaddrinfo
 
@@ -70,7 +70,12 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     }
     cout << "request_message : " << request_message << endl;
 
-    blacklist("blocked-domains.txt");
+    string cCurrentPath;
+    getcwd(cCurrentPath, sizeof(cCurrentPath));
+    cCurrentPath[sizeof(cCurrentPath) - 1] = '\0';
+
+    string blacklistFile = cCurrentPath + "/blocked-domains.txt"
+    blacklist(blacklistFile);
     if(blacklist.is_blacklisted(request_message)){
         cout << "blacklisted server: " << request_message << endl;
         exit(0);
