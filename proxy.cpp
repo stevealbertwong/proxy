@@ -70,12 +70,12 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     }
     cout << "request_message : " << request_message << endl;
 
-    string cCurrentPath;
+    char cCurrentPath[FILENAME_MAX];
     getcwd(cCurrentPath, sizeof(cCurrentPath));
     cCurrentPath[sizeof(cCurrentPath) - 1] = '\0';
-
     string blacklistFile = cCurrentPath + "/blocked-domains.txt"
-    blacklist(blacklistFile);
+    
+    HTTPBlacklist blacklist(blacklistFile);
     if(blacklist.is_blacklisted(request_message)){
         cout << "blacklisted server: " << request_message << endl;
         exit(0);
