@@ -79,7 +79,8 @@ void HTTPProxy::ProxyRequest(){
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
         ParsedRequest_destroy(req);
-        close(client_fd);
+        // !!!! remember to close clientfd for failed request otherwise stuck at parse_request loop, client_fd is blocked
+        close(client_fd); 
         
     } else {
         // default port set to 80
