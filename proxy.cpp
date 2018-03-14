@@ -16,7 +16,7 @@
 using namespace std;
 
 HTTPProxy::HTTPProxy(int port){
-    CreateServerSocket(port);
+    CreateProxySocket(port);
 
 }
 
@@ -177,7 +177,7 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
     return remote_socket;
 }
 
-void HTTPProxy::CreateServerSocket(int port){
+void HTTPProxy::CreateProxySocket(int port){
 
     proxy_fd = socket(AF_INET, SOCK_STREAM, 0);
     
