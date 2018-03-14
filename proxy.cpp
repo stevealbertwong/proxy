@@ -42,7 +42,7 @@ void HTTPProxy::ProxyRequest(){
     // error checking
     if (request_message == NULL) {
 		fprintf (stderr," Error in memory allocation ! \n");
-		exit (1);
+		
 	}
     cout << "passed error checking requst msg not null " << endl;
 
@@ -55,8 +55,8 @@ void HTTPProxy::ProxyRequest(){
         
         // error checking
         if (byte_recvd<0){
-            fprintf(stderr,"error in receiving from client's request");
-            exit(1);
+            fprintf(stderr,"error in reciving from client's request");
+      
         } else if(byte_recvd ==0){
             fprintf(stderr,"zero byte received");
             break;
@@ -79,8 +79,7 @@ void HTTPProxy::ProxyRequest(){
     
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
-        // exit(0);
-        break;
+        
         
     } else {
         // default port set to 80
@@ -124,12 +123,12 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
         while (totalsent < buff_length) {		
             if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {                
                 fprintf (stderr," Error in sending to server ! \n");
-                    exit (1);
+                
             }
             totalsent += senteach;
-            cout << "sending back to client" << totalsent << endl;
-		memset(received_buf,0,sizeof(received_buf));	
+            cout << "sending back to client" << totalsent << endl;		    
     	}      
+        memset(received_buf,0,sizeof(received_buf));
     }
 }
 
@@ -216,7 +215,7 @@ char* HTTPProxy::RequestToString(struct ParsedRequest *req)
     
     if(serverReq == NULL){
 		fprintf (stderr," Error in memory allocation for serverrequest ! \n");
-		exit (1);
+		
 	}
 
 	serverReq[0] = '\0'; // initialization of char string
