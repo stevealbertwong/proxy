@@ -24,8 +24,7 @@ int main(int argc, char *argv[]){
     socklen_t clientAddrSize = sizeof(clientAddr);
     HTTPProxy httpproxy(3500);
     int proxy_fd = httpproxy.getProxyfd();
-
-    // cout << "listening on port: " << httpproxy.GetPort() << endl;
+    
     while(true){
 
         int client_fd = accept(proxy_fd, (struct sockaddr *) &clientAddr, &clientAddrSize);

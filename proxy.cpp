@@ -118,8 +118,7 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
         int senteach;
         while (totalsent < buff_length) {		
             if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {                
-                fprintf (stderr," Error in sending to server ! \n");
-                
+                fprintf (stderr," Error in sending to server ! \n");                
             }
             totalsent += senteach;
             cout << "sending back to client" << totalsent << endl;		    
