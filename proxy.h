@@ -9,7 +9,7 @@ class HTTPProxy {
         void ProxyRequest();
 
     private:
-        int mSocketDescriptor;
+        int proxy_fd;
         void ProxyBackClient(int client_fd, int remote_socket);
         void SendRequestRemote(const char *req_string, int remote_socket, int buff_length);
         int CreateRemoteSocket(char* remote_addr, char* port);
