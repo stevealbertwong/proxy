@@ -55,7 +55,7 @@ void HTTPProxy::ProxyRequest(){
         
         // error checking
         if (byte_recvd<0){
-            fprintf(stderr,"error in reciving from client's request");
+            fprintf(stderr,"error in receiving from client's request");
             exit(1);
         } else if(byte_recvd ==0){
             fprintf(stderr,"zero byte received");
@@ -80,6 +80,7 @@ void HTTPProxy::ProxyRequest(){
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
         // exit(0);
+        break;
         
     } else {
         // default port set to 80
