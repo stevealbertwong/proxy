@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     
     // cout << "listening on port: " << httpproxy.GetPort() << endl;
     while(true){
-        cout << "proxy request" << endl;
+        cout << "proxy request looping" << endl;
         httpproxy.ProxyRequest();
     }
 

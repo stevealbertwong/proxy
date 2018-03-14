@@ -30,7 +30,7 @@ void HTTPProxy::ProxyRequest(){
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
-    cout << "server got connection from client:" << clientIPAddress << clientPort << endl;
+    cout << "server got connection from client firefox browser:" << clientIPAddress << "port no.: " << clientPort << endl;
 
 
 
@@ -54,8 +54,6 @@ void HTTPProxy::ProxyRequest(){
     }
     cout << "request_message : " << request_message << endl;
     
-
-
     struct ParsedRequest *req;    // contains parsed request
     req = ParsedRequest_create();    
     
@@ -95,7 +93,10 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
 
     // receive from remote's response, send back to client
 	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
-        cout << "received from remote: "<< buff_length << endl;
+        
+        cout << "received from remote: "<< received_buf << endl;
+        string temp;
+	    temp.append(received_buf);
         int totalsent = 0;
         int senteach;
         while (totalsent < buff_length) {		
@@ -190,6 +191,12 @@ char* HTTPProxy::RequestToString(struct ParsedRequest *req)
 	int request_size = strlen(req->method) + strlen(req->path) + strlen(req->version) + iHeadersLen + 4;
 	char *serverReq;
 	serverReq = (char *) malloc(request_size + 1);
+    
+    if(serverReq == NULL){
+		fprintf (stderr," Error in memory allocation for serverrequest ! \n");
+		exit (1);
+	}
+
 	serverReq[0] = '\0'; // initialization of char string
 	strcpy(serverReq, req->method);
 	strcat(serverReq, " ");
