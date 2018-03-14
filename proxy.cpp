@@ -33,7 +33,6 @@ void HTTPProxy::ProxyRequest(){
     cout << "server got connection from client firefox browser:" << clientIPAddress << "port no.: " << clientPort << endl;
 
 
-
     // forward client request to google
     int MAX_BUFFER_SIZE = 5000;
     char buf[MAX_BUFFER_SIZE];
@@ -79,7 +78,8 @@ void HTTPProxy::ProxyRequest(){
     
     if(ParsedRequest_parse(req, request_message, strlen(request_message))<0){
         cout << "request message format not supported yet" << endl;
-        
+        ParsedRequest_destroy(req);
+        close(client_fd);
         
     } else {
         // default port set to 80
