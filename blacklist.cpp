@@ -15,13 +15,14 @@ using namespace std;
 HTTPBlacklist::HTTPBlacklist(const string& file_name){
     ifstream infile(file_name);
 
-    while(true){
-        string line;
-        getline(infile, line);
+    string line;
+    while(getline(infile, line)){            
+        cout << line << endl;
         regex re(line);
         blacklist_websites.push_back(re);
     }    
 }
+
 
 bool HTTPBlacklist::is_blacklisted(const string& website){
     for (const regex& re: blacklist_websites){
