@@ -1,0 +1,51 @@
+https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+https://en.wikipedia.org/wiki/HTTP_message_body
+https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+
+HTTP messages
+=============
+
+Request format
+    - first line(request line):
+        - GET <path> HTTP/<version>
+        - e.g. GET /logo.gif HTTP/1.1
+        - e.g. GET http://www.google.com:80/index.html/ HTTP/1.0\r\n
+    - required headers:
+        - Host        
+    - support for:
+        - Connection
+    - optional headers:
+    - last line is empty, i.e., ends with "\r\n\r\n"
+    - optional message body 
+        - e.g. POST request with key:value json
+        - GET request already has payload sometimes /api/search?key=value&key=value
+
+Response format:
+    - first line (status line with status code):
+        - HTTP/<version> <status code> <status description>
+        - e.g. HTTP/1.1 200 OK
+    - required headers:
+        - Content-Length (if OK and sending payload)
+    - support for:
+        - Connection
+    - optional headers:
+    - empty line separates header and payload
+    - optional message body 
+        - json or html
+
+
+Response examples:
+
+    HTTP/1.1 200 OK
+    Date: Sun, 10 Oct 2010 23:26:07 GMT
+    Server: Apache/2.2.8 (Ubuntu) mod_ssl/2.2.8 OpenSSL/0.9.8g
+    Last-Modified: Sun, 26 Sep 2010 22:04:35 GMT
+    ETag: "45b6-834-49130cc1182c0"
+    Accept-Ranges: bytes
+    Content-Length: 13
+    Connection: close
+    Content-Type: text/html
+
+    Hello world!
+
+
