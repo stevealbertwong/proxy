@@ -1,5 +1,7 @@
 # Proxy
 
+Accompanying blogpost: https://stevealbertwong.github.io/2017/01/20/multiprocess-proxy/
+
 Compile
 ```
 // compile multiple sources to object then dynamically linked by g++ linker to executable
