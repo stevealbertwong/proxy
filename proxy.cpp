@@ -8,6 +8,7 @@
 #include <strings.h> // bzero (on linux), strlen, strcat, strcpy
 #include <stdlib.h> //malloc
 #include <unistd.h> // close(), getcwd()
+#include <string>
 
 #include <netdb.h> // getaddrinfo
 
@@ -64,11 +65,65 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
                 request_message = (char *) realloc(request_message, MAX_BUFFER_SIZE);
             }
 
-        }
-        
+        }        
         strcat(request_message, buf);
     }
-    cout << "request_message : " << request_message << endl;
+    cout << "request_message in char*: " << request_message << endl;
+    
+    // convert char* into string
+    string request;
+    request.append(request_message, *n);
+    cout << "request_message in string: " << request.c_str() << endl;
+
+    size_t start = 0;
+    size_t end = 0;
+
+    string method;
+    string uri;
+    string version;
+
+    // Get method, URI, and version info
+    end = request.find(' ', start);
+    if (end == string::npos)
+        return;
+    method = request.substr(start, end - start);
+    start = end + 1;
+    end = request.find(' ', start);
+    if (end == string::npos)
+        return;
+    uri = request.substr(start, end - start);
+    start = end + 1;
+    end = request.find("\r\n", start);
+    if (end == string::npos)
+        return;
+    version = request.substr(start, end - start);
+    start = end + 2;
+
+    cout << "Method: " << method << endl;
+    cout << "URI: " << uri << endl;
+    cout << "Version: " << version << endl;
+
+    unordered_map<string, string> headers;
+    // Store headers into the map declared above
+    while (true)
+    {
+        string key, value;
+
+        end = request.find(": ", start);
+        if (end == string::npos)
+            break;
+        key = request.substr(start, end - start);
+        start = end + 2;
+        end = request.find("\r\n", start);
+        if (end == string::npos)
+            break;
+        value = request.substr(start, end - start);
+        start = end + 2;
+
+        cout << "Key: " << key << " Value: " << value << endl;
+    }
+
+    // TODO => parse request_message into http-request class
 
     // char cCurrentPath[FILENAME_MAX];
     // getcwd(cCurrentPath, sizeof(cCurrentPath));
