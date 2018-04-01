@@ -6,7 +6,10 @@
 &nbsp;[Set up testing](https://github.com/stevealbertwong/proxy/blob/master/README.md#set-up-testing)  <br/> 
 &nbsp;[Pull request welcome](https://github.com/stevealbertwong/proxy/blob/master/README.md#pull-request)  <br/> 
 
+--- 
+
 Checkout the [proxy](https://github.com/stevealbertwong/proxy/blob/v3_http_request_response_proxy/proxy.cpp) program for a complete logic of proxy.
+
 Accompanying blogpost: https://stevealbertwong.github.io/2017/01/20/multiprocess-proxy/
 
 # Build instructions
@@ -28,9 +31,9 @@ clang++ -x c++ main.cpp proxy.cpp -x c proxy_parse.c -o http-proxy
 # Versions
 Currently, there 3 versions. v1 implements a vanilia proxy server with no caching or multiprocess or blacklist/ v2 has blacklist and multi-process, v3 has caching and http request, response, header parsing.
 
----
 
-## Set up testing
+
+# Set up testing
 To Set up testing with home linux server acting as proxy:
 setting firefox browser to proxy to your own dynamic external ip at the time assigned by your router to your linux machine. then your code on linux machine proxy request to google server and proxy back to your client machine
 (code only compile on linux machine)
