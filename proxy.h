@@ -21,7 +21,7 @@ class HTTPProxy {
         void SendRequestRemote(const char *req_string, int remote_socket, int buff_length);
         int CreateRemoteSocket(char* remote_addr, char* port);
         void CreateProxySocket(int port);
-        char* RequestToString(struct ParsedRequest *req);
+        char* EngineerRequest(struct ParsedRequest *req);
         HttpCache httpcache;
 };
 
