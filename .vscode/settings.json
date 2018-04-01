@@ -3,6 +3,9 @@
         "iosfwd": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "__locale": "cpp",
+        "ios": "cpp",
+        "string": "cpp"
     }
 }

@@ -152,7 +152,7 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
         if (req->port == NULL) {
             req->port = (char *) "80";
         }		 
-        char* req_string = RequestToString(req);	
+        char* req_string = EngineerRequest(req);	
         cout << "client req_string to be sent to google : " << req_string << endl;
 
         cout << "client host n port: " << req->host << req->port << endl;
@@ -163,7 +163,7 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
         SendRequestRemote(req_string, remote_socket, total_received_bits);
 
         cout << "ProxyBackClient" << endl;
-        ProxyBackClient(client_fd, remote_socket);
+        ProxyBackClient(client_fd, remote_socket, req_string);
         
         ParsedRequest_destroy(req);		
         close(client_fd);   
@@ -173,7 +173,10 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
 
 /* private init methods */
 //TODO: save response stream as string + parse + save string into directory
-void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
+void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket, const char* req_string){
+    string request;
+    string full_response;
+	request.append(req_string);
     int MAX_BUF_SIZE = 5000;
 	int buff_length;
 	char received_buf[MAX_BUF_SIZE];
@@ -182,6 +185,8 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
 	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
         
         cout << "received from remote: "<< buff_length << endl;
+        
+        full_response.append(received_buf);
         string temp;
 	    temp.append(received_buf);
         int totalsent = 0;
@@ -195,6 +200,8 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
     	}      
         memset(received_buf,0,sizeof(received_buf));
     }
+    httpcache.saveCache(request, full_response);
+    cout << "whether cache exist: " << httpcache.ensureEntryExists(request) << endl;
 }
 
 void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int buff_length){
@@ -264,7 +271,7 @@ void HTTPProxy::CreateProxySocket(int port){
 }
 
 // engineering request back
-char* HTTPProxy::RequestToString(struct ParsedRequest *req)
+char* HTTPProxy::EngineerRequest(struct ParsedRequest *req)
 {
 	/* Set headers */
 	ParsedHeader_set(req, "Host", req -> host);
