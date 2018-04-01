@@ -1,5 +1,12 @@
-# Proxy
+# Multi-process Proxy server with caching and blacklist
 
+# Table of Contents
+&nbsp;[Build Instruction](https://github.com/stevealbertwong/proxy/blob/master/README.md#build-instructions)  <br/> 
+&nbsp;[Versions](https://github.com/stevealbertwong/proxy/blob/master/README.md#versions)  <br/> 
+&nbsp;[Set up testing](https://github.com/stevealbertwong/proxy/blob/master/README.md#set-up-testing)  <br/> 
+&nbsp;[Pull request welcome](https://github.com/stevealbertwong/proxy/blob/master/README.md#pull-request)  <br/> 
+
+Checkout the [proxy](https://github.com/stevealbertwong/proxy/blob/v3_http_request_response_proxy/proxy.cpp) program for a complete logic of proxy.
 Accompanying blogpost: https://stevealbertwong.github.io/2017/01/20/multiprocess-proxy/
 
 # Build instructions
@@ -23,8 +30,8 @@ Currently, there 3 versions. v1 implements a vanilia proxy server with no cachin
 
 ---
 
-## Testing with home linux server acting as proxy 
-
+## Set up testing
+To Set up testing with home linux server acting as proxy:
 setting firefox browser to proxy to your own dynamic external ip at the time assigned by your router to your linux machine. then your code on linux machine proxy request to google server and proxy back to your client machine
 (code only compile on linux machine)
 
