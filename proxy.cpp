@@ -109,7 +109,7 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
         
         string reqt(req_string);
         if(httpcache.ensureEntryExists(reqt)){
-            string res = httpcache.retrieveCache(request);
+            string res = httpcache.retrieveCache(reqt);
             ProxyBackClient(client_fd, remote_socket, req_string);
         }
         else{
