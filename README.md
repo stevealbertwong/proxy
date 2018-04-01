@@ -29,7 +29,13 @@ make
 clang++ -x c++ main.cpp proxy.cpp -x c proxy_parse.c -o http-proxy
 ```
 # Versions
-Currently, there 3 versions. v1 implements a vanilia proxy server with no caching or multiprocess or blacklist/ v2 has blacklist and multi-process, v3 has caching and http request, response, header parsing.
+Currently, there are 3 versions. Change branch on upper right corner from master to other branches!
+
+v1 implements a vanilia proxy server with no caching or multiprocess or blacklist
+
+v2 has blacklist and multi-process
+
+v3 has caching and http request, response, header parsing
 
 
 
