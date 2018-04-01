@@ -7,6 +7,7 @@
 #include "proxy_parse.h"
 #include "blacklist.h"
 #include "cache.h"
+#include "httpresponse.h"
 
 class HTTPProxy {
     public:
@@ -23,6 +24,7 @@ class HTTPProxy {
         void CreateProxySocket(int port);
         char* EngineerRequest(struct ParsedRequest *req);
         HttpCache httpcache;
+        HttpResponse httpresponse;
 };
 
 #endif
