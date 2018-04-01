@@ -155,7 +155,7 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket, const char* re
     	}      
         memset(received_buf,0,sizeof(received_buf));
     }
-    httpresponse.parseResponse(response);
+    httpresponse.parseResponse(full_response);
     httpcache.saveCache(request, full_response);
     cout << "whether cache exist: " << httpcache.ensureEntryExists(request) << endl;
 }
