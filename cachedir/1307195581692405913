@@ -1,0 +1,23 @@
+HTTP/1.1 200 OK
+Cache-Control: max-age=0, must-revalidate
+Content-Encoding: gzip
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 01 Apr 2018 09:52:29 GMT
+Link: <https://www.stanford.edu/wp-json/>; rel="https://api.w.org/"
+Link: <https://www.stanford.edu/?p=100>; rel=shortlink
+Server: nginx
+Set-Cookie: wordpress_google_apps_login=2d117f045fc6c4cbeb190d51db87b0b8; path=/; secure
+Vary: Accept-Encoding
+WPE-Backend: apache
+X-Cache: MISS
+X-Cache-Group: normal
+X-Cacheable: NO:Set Known Cookie
+X-Frame-Options: SAMEORIGIN
+X-Pass-Why: 
+X-Type: default
+X-WPE-Loopback-Upstream-Addr: 127.0.0.1:6789
+Content-Length: 8967
+Connection: Close
+
+‹CT\Õ;’fç±¼K`A`ÿ¾uè~ß|Úª×ï^oíŞ`fós±á[gÈiìüé¶·¶ :°ònä¬İtk¬5€©ã4nkX$KöhN]µ×›õÆ¾Yo™Í¦Yß5Ûí5¶ı rÃ¤x:Îìs;æ·UGƒnõÎ­ë¼tˆ%8ÃÿHh®ş1Ïäál˜&Ngû™»Ä†–?¶‘1uÇp)ÏgİÙ(—oš•l0¹ÄÎ–ÆôúËl6+cP ²³¨y?ºÉ»·/Wcña	‹¿=~VDÔÀR7ÀúQ80ÃIø8Š×K¦2ófSÛwGNnb™l>Ë™ziª°Ô†”­q¡ªÉ”ÇêQe3VØ~àƒ<&å®MÔw™ÖLÀQs×Nôã°Û¨×§ùJrIóEàLûeJ¸<½²¸Õ0ëW|œF^—Wøò÷Íøÿâ„áÿ..ÌxL«0‘ÛK¢wp=S;éªe¼wXFq|rôöDâ…=púAğ^0YûoR_2_ó…°ı¡8™¹	¡xjƒw:±Ç±hšM³e6˜ËbşsU#ò«â¥AÒC'JæÌ£{q´î×ñOÁÆèRq¢)§Ä9j¬à.­Ï,S¡n™¼´–¿PéR4 v÷eÀÓ™,4cG‰;ÀØ/+ìÊ˜<_¡ÖŠÑ
+7ïˆ`$@Å,ˆ¼!-öÁa,À],ÇLè­bäÄ&"ÕÌ®ëÄ¦8Æw„› 5°TØõEcÿ3,³»j§õXíS(B~¥øÍö²‚±ÃN¤”7Wå£–]\Paá.CJåÔÂ,D¥¤Ìüa… ùš»÷.†,«ˆ…5jêÅ´q+öÂDp¥òĞ•Wæ¬jª¼ïåºQ>NĞüQ“@‰J¸ö",ïŠ¡«`Y½G•«+n¢²İhav)8!ë/®ô¾Të·¾í.Q»xë“¼.ÜáªÆÊÓ¶Æî+Znòƒyõñ·wÿ#6ÑFh\”n}ÕğV¯ÄåyéŸÊ[QTzzy×Y>ÄÕ­éº”ªTm.œˆåÚc£6ÿeÉê5~ælö«†{Åj–¶øÚ%ù‚/÷Á»gú¥Í,.çÉâÃ€%„È7‡µg€R5š¦8åX¶fc˜í`­Ós¬Ğæ—üv
