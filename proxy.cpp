@@ -70,6 +70,7 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
     }
     cout << "request_message in char*: " << request_message << endl;
     
+
     // TODO => parse request_message into http-request class
 
     // char cCurrentPath[FILENAME_MAX];
@@ -106,12 +107,18 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
         // remote socket: connection to remote host e.g. google
         int remote_socket = CreateRemoteSocket(req->host, req->port);
         
-        cout << "SendRequestRemote: " << remote_socket << " total received bits" << total_received_bits << endl;
-        SendRequestRemote(req_string, remote_socket, total_received_bits);
+        string reqt(req_string);
+        if(httpcache.ensureEntryExists(reqt)){
+            string res = httpcache.retrieveCache(request);
+            ProxyBackClient(client_fd, remote_socket, req_string);
+        }
+        else{
+            cout << "SendRequestRemote: " << remote_socket << " total received bits" << total_received_bits << endl;
+            SendRequestRemote(req_string, remote_socket, total_received_bits);
+            cout << "ProxyBackClient" << endl;
+            ProxyBackClient(client_fd, remote_socket, req_string);        
+        }
 
-        cout << "ProxyBackClient" << endl;
-        ProxyBackClient(client_fd, remote_socket, req_string);
-        
         ParsedRequest_destroy(req);		
         close(client_fd);   
         close(remote_socket);
