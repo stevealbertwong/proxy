@@ -172,7 +172,7 @@ void HTTPProxy::ProxyRequest(int client_fd, struct sockaddr_in clientAddr, sockl
 }
 
 /* private init methods */
-
+//TODO: save response stream as string + parse + save string into directory
 void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
     int MAX_BUF_SIZE = 5000;
 	int buff_length;
@@ -263,6 +263,7 @@ void HTTPProxy::CreateProxySocket(int port){
     cout << "listening on port: " << port << endl;    
 }
 
+// engineering request back
 char* HTTPProxy::RequestToString(struct ParsedRequest *req)
 {
 	/* Set headers */
