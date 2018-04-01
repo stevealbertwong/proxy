@@ -9,6 +9,7 @@ SOURCES = \
 	main.cpp \
 	proxy.cpp \
 	blacklist.cpp \
+	cache.cpp \
 	proxy_parse.c 
 HEADERS = $(SOURCES:.cpp=.h)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -23,9 +24,10 @@ all: http-proxy
 http-proxy: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o proxy_parse.o -c proxy_parse.c 
 	$(CXX) $(CXXFLAGS) -o proxy.o -c proxy.cpp
+	$(CXX) $(CXXFLAGS) -o cache.o -c cache.cpp
 	$(CXX) $(CXXFLAGS) -o main.o -c main.cpp
 	$(CXX) $(CXXFLAGS) -o blacklist.o -c blacklist.cpp
-	$(CXX) $(CXXFLAGS) -o http-proxy proxy_parse.o proxy.o main.o blacklist.o
+	$(CXX) $(CXXFLAGS) -o http-proxy proxy_parse.o proxy.o main.o blacklist.o cache.o
 
 clean:
 	rm -f http-proxy *.o
