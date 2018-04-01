@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include "proxy_parse.h"
 #include "blacklist.h"
-#include "proxy.h"
+#include "cache.h"
 
 class HTTPProxy {
     public:
